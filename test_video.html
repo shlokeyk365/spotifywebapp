@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        .bg-galaxy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 1;
+        }
+        
+        #galaxy-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: brightness(0.8) contrast(1.2);
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 1;
+        }
+        
+        .test-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.7);
+            margin: 2rem;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-galaxy active">
+        <video id="galaxy-video" autoplay muted loop playsinline preload="auto">
+            <source src="/static/videos/galaxyvid.mp4" type="video/mp4">
+            <p>Your browser doesn't support video playback.</p>
+        </video>
+    </div>
+    
+    <div class="test-content">
+        <h1>Video Background Test</h1>
+        <p>If you can see a moving galaxy video behind this text, the video is working!</p>
+        <p>Video element ID: <span id="video-info">Loading...</span></p>
+        <button onclick="checkVideo()">Check Video State</button>
+    </div>
+    
+    <script>
+        function checkVideo() {
+            const video = document.getElementById('galaxy-video');
+            const info = document.getElementById('video-info');
+            
+            if (video) {
+                info.innerHTML = `
+                    Paused: ${video.paused}<br>
+                    Ready State: ${video.readyState}<br>
+                    Current Src: ${video.currentSrc}<br>
+                    Display: ${video.style.display}<br>
+                    Opacity: ${video.style.opacity}<br>
+                    Visibility: ${video.style.visibility}
+                `;
+            } else {
+                info.innerHTML = 'Video element not found!';
+            }
+        }
+        
+        // Auto-check video state
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(checkVideo, 1000);
+        });
+    </script>
+</body>
+</html> 

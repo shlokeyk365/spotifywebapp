@@ -7,7 +7,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0; /* Changed from -1 to 0 to be above page background */
     pointer-events: none;
     opacity: 1;
 }
@@ -24,8 +24,54 @@
     transform: translate(-50%, -50%);
     object-fit: cover;
     filter: brightness(0.8) contrast(1.2);
-    display: block;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     z-index: 1;
+}
+
+/* Ensure main content is above video */
+.projector {
+    position: relative;
+    z-index: 10;
+}
+
+/* Ensure video container is always visible */
+.bg-galaxy.active #galaxy-video {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Video overlay for autoplay restrictions */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.play-video-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.play-video-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Enhanced glassy card styling */

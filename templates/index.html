@@ -10,9 +10,15 @@
 <body>
     <!-- Galaxy video background -->
     <div id="bg-galaxy" class="bg-galaxy active">
-        <video id="galaxy-video" autoplay muted loop playsinline>
+        <video id="galaxy-video" autoplay muted loop playsinline preload="auto">
             <source src="/static/videos/galaxyvid.mp4" type="video/mp4">
+            <!-- Fallback message for unsupported browsers -->
+            <p>Your browser doesn't support video playback.</p>
         </video>
+        <!-- Click to play fallback for autoplay restrictions -->
+        <div id="video-overlay" class="video-overlay" style="display: none;">
+            <button id="play-video-btn" class="play-video-btn">Click to Play Video Background</button>
+        </div>
     </div>
 
     <!-- Toast notification area -->

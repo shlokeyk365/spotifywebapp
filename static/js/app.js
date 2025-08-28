@@ -17,7 +17,37 @@ class VibeProjector {
         
         this.initializeElements();
         this.bindEvents();
+        this.initializeVideo();
         this.startPolling();
+    }
+    
+    initializeVideo() {
+        if (this.galaxyVideo) {
+            // Ensure video plays and handles errors
+            this.galaxyVideo.addEventListener('loadeddata', () => {
+                console.log('Galaxy video loaded successfully');
+                this.galaxyVideo.play().catch(e => {
+                    console.warn('Video autoplay failed:', e);
+                    this.showVideoOverlay();
+                });
+            });
+            
+            this.galaxyVideo.addEventListener('error', (e) => {
+                console.error('Video error:', e);
+                this.showToast('Video background failed to load', 'error');
+            });
+            
+            this.galaxyVideo.addEventListener('ended', () => {
+                // Restart video when it ends (for loop)
+                this.galaxyVideo.currentTime = 0;
+                this.galaxyVideo.play().catch(e => console.warn('Video restart failed:', e));
+            });
+            
+            // Force video to be visible
+            this.galaxyVideo.style.display = 'block';
+            this.galaxyVideo.style.opacity = '1';
+            this.galaxyVideo.style.visibility = 'visible';
+        }
     }
     
     initializeElements() {
@@ -28,6 +58,9 @@ class VibeProjector {
         
         // Galaxy video background
         this.galaxyContainer = document.getElementById('bg-galaxy');
+        this.galaxyVideo = document.getElementById('galaxy-video');
+        this.videoOverlay = document.getElementById('video-overlay');
+        this.playVideoBtn = document.getElementById('play-video-btn');
         
         // Fullscreen elements
         this.fullscreenToggle = document.getElementById('fullscreen-toggle');
@@ -77,6 +110,13 @@ class VibeProjector {
             this.toggleFullscreen();
         });
         
+        // Video play button
+        if (this.playVideoBtn) {
+            this.playVideoBtn.addEventListener('click', () => {
+                this.playVideoBackground();
+            });
+        }
+        
         // Click to fullscreen (mobile friendly)
         this.projector.addEventListener('click', (e) => {
             // Don't trigger fullscreen if clicking on interactive elements
@@ -118,8 +158,67 @@ class VibeProjector {
             this.fetchNowPlaying();
         }, this.pollInterval);
         
+        // Video visibility check (every 5 seconds)
+        this.videoTimer = setInterval(() => {
+            this.ensureVideoVisible();
+        }, 5000);
+        
         // Initial fetch
         this.fetchNowPlaying();
+        
+        // Ensure video stays visible
+        this.ensureVideoVisible();
+    }
+    
+    ensureVideoVisible() {
+        if (this.galaxyVideo) {
+            // Force video to be visible and playing
+            this.galaxyVideo.style.display = 'block';
+            this.galaxyVideo.style.opacity = '1';
+            this.galaxyVideo.style.visibility = 'visible';
+            
+            // Ensure video is playing
+            if (this.galaxyVideo.paused) {
+                this.galaxyVideo.play().catch(e => {
+                    console.warn('Video play failed:', e);
+                    this.showVideoOverlay();
+                });
+            }
+            
+            // Debug info
+            console.log('Video state:', {
+                paused: this.galaxyVideo.paused,
+                readyState: this.galaxyVideo.readyState,
+                currentSrc: this.galaxyVideo.currentSrc,
+                display: this.galaxyVideo.style.display,
+                opacity: this.galaxyVideo.style.opacity,
+                visibility: this.galaxyVideo.style.visibility
+            });
+        }
+    }
+    
+    showVideoOverlay() {
+        if (this.videoOverlay) {
+            this.videoOverlay.style.display = 'flex';
+        }
+    }
+    
+    hideVideoOverlay() {
+        if (this.videoOverlay) {
+            this.videoOverlay.style.display = 'none';
+        }
+    }
+    
+    playVideoBackground() {
+        if (this.galaxyVideo) {
+            this.galaxyVideo.play().then(() => {
+                this.hideVideoOverlay();
+                this.showToast('Video background started', 'success');
+            }).catch(e => {
+                console.error('Failed to play video:', e);
+                this.showToast('Failed to play video: ' + e.message, 'error');
+            });
+        }
     }
     
     async fetchNowPlaying() {
@@ -453,7 +552,12 @@ class VibeProjector {
     
     // Cleanup method for page unload
     cleanup() {
-        // Video cleanup not needed - it's always active
+        if (this.pollTimer) {
+            clearInterval(this.pollTimer);
+        }
+        if (this.videoTimer) {
+            clearInterval(this.videoTimer);
+        }
     }
 }
 

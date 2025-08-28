@@ -54,6 +54,8 @@
     transform: translate(-50%, -50%);
     object-fit: cover;
     filter: brightness(0.8) contrast(1.2);
+    display: block;
+    z-index: 1;
 }
 
 /* Scene 1: Animated Gradient */

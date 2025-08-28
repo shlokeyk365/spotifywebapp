@@ -123,6 +123,7 @@ class VibeProjector {
     }
     
     switchScene(sceneNumber, savePreference = true) {
+        console.log('Switching to scene:', sceneNumber, 'from scene:', this.currentScene);
         if (sceneNumber === this.currentScene) {
             return;
         }
@@ -145,6 +146,8 @@ class VibeProjector {
             this.scenes[sceneNumber].classList.add('active');
         } else if (sceneNumber === 4) {
             this.startGalaxyScene();
+            // Ensure the video container is visible immediately
+            this.galaxyContainer.classList.add('active');
         }
         
         // Update scene indicator
@@ -170,10 +173,17 @@ class VibeProjector {
     
     startGalaxyScene() {
         try {
+            console.log('Starting galaxy video scene...');
             const video = document.getElementById('galaxy-video');
             if (video) {
-                this.galaxyContainer.classList.add('active');
-                video.play().catch(e => console.warn('Video autoplay failed:', e));
+                // Ensure video is ready and visible
+                video.style.display = 'block';
+                console.log('Video element found, attempting to play...');
+                video.play().then(() => {
+                    console.log('Video started playing successfully');
+                }).catch(e => {
+                    console.warn('Video autoplay failed:', e);
+                });
             } else {
                 console.warn('Galaxy video not found, falling back to scene 1');
                 this.switchScene(1, false);

@@ -1,7 +1,7 @@
-/* Vibe Projector - Animated Background Scenes */
+/* Vibe Projector - Galaxy Video Background */
 
-/* Scene container */
-.scene-container {
+/* Galaxy video background container */
+.bg-galaxy {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,40 +9,10 @@
     height: 100%;
     z-index: -1;
     pointer-events: none;
-}
-
-.scene {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.scene.active {
     opacity: 1;
 }
 
-/* Galaxy background container (Video) */
-.bg-galaxy {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    overflow: hidden;
-}
-
-.bg-galaxy.active {
-    opacity: 1;
-}
-
+/* Galaxy video styling */
 #galaxy-video {
     position: absolute;
     top: 50%;
@@ -56,178 +26,6 @@
     filter: brightness(0.8) contrast(1.2);
     display: block;
     z-index: 1;
-}
-
-/* Scene 1: Animated Gradient */
-.scene-gradient {
-    background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Scene 2: Drifting Blobs */
-.scene-blobs {
-    background: radial-gradient(circle at 20% 80%, #667eea 0%, #764ba2 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.7;
-    animation: float 6s ease-in-out infinite;
-}
-
-.blob:nth-child(1) {
-    width: 200px;
-    height: 200px;
-    background: #ff6b6b;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.blob:nth-child(2) {
-    width: 150px;
-    height: 150px;
-    background: #4ecdc4;
-    top: 60%;
-    right: 20%;
-    animation-delay: 2s;
-}
-
-.blob:nth-child(3) {
-    width: 180px;
-    height: 180px;
-    background: #45b7d1;
-    bottom: 20%;
-    left: 30%;
-    animation-delay: 4s;
-}
-
-.blob:nth-child(4) {
-    width: 120px;
-    height: 120px;
-    background: #96ceb4;
-    top: 40%;
-    left: 60%;
-    animation-delay: 1s;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px) scale(1);
-    }
-    50% {
-        transform: translateY(-20px) scale(1.1);
-    }
-}
-
-/* Scene 3: Galaxy Stripes */
-.scene-galaxy {
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.galaxy-stripe {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: stripeMove 8s linear infinite;
-}
-
-.galaxy-stripe:nth-child(1) {
-    left: 20%;
-    animation-delay: 0s;
-}
-
-.galaxy-stripe:nth-child(2) {
-    left: 40%;
-    animation-delay: 2s;
-}
-
-.galaxy-stripe:nth-child(3) {
-    left: 60%;
-    animation-delay: 4s;
-}
-
-.galaxy-stripe:nth-child(4) {
-    left: 80%;
-    animation-delay: 6s;
-}
-
-@keyframes stripeMove {
-    0% {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-}
-
-.particle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    animation: particleFloat 10s ease-in-out infinite;
-}
-
-.particle:nth-child(5) {
-    top: 30%;
-    left: 15%;
-    animation-delay: 0s;
-}
-
-.particle:nth-child(6) {
-    top: 70%;
-    right: 25%;
-    animation-delay: 3s;
-}
-
-.particle:nth-child(7) {
-    bottom: 40%;
-    left: 70%;
-    animation-delay: 6s;
-}
-
-.particle:nth-child(8) {
-    top: 50%;
-    left: 50%;
-    animation-delay: 9s;
-}
-
-@keyframes particleFloat {
-    0%, 100% {
-        transform: translateY(0px) translateX(0px);
-        opacity: 0.6;
-    }
-    50% {
-        transform: translateY(-15px) translateX(10px);
-        opacity: 1;
-    }
 }
 
 /* Enhanced glassy card styling */
@@ -251,11 +49,6 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
-}
-
-.scene-number {
-    font-weight: bold;
-    color: var(--text-primary);
 }
 
 /* Fullscreen toggle button */
@@ -311,7 +104,7 @@
     margin: 0 0.2rem;
 }
 
-/* Responsive adjustments for scenes */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .scene-indicator {
         top: 1rem;
@@ -338,28 +131,8 @@
     }
 }
 
-/* Fullscreen scene optimizations */
-.projector:fullscreen .scene-container {
-    z-index: -1;
-}
-
+/* Fullscreen optimizations */
 .projector:fullscreen .scene-indicator,
 .projector:fullscreen .fullscreen-toggle {
     display: none;
-}
-
-/* Scene transition effects */
-.scene-transition {
-    animation: sceneFade 0.5s ease-in-out;
-}
-
-@keyframes sceneFade {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 } 

@@ -11,14 +11,12 @@ class VibeProjector {
         this.pollTimer = null;
         this.isConnected = false;
         this.currentTrack = null;
-        this.currentScene = 1; // Default to scene 1
         this.retryCount = 0;
         this.maxRetries = 3;
         this.networkError = false;
         
         this.initializeElements();
         this.bindEvents();
-        this.loadScenePreference();
         this.startPolling();
     }
     
@@ -28,15 +26,8 @@ class VibeProjector {
         this.mainCard = document.getElementById('main-card');
         this.connectSection = document.getElementById('connect-section');
         
-        // Scene elements
-        this.sceneContainer = document.querySelector('.scene-container');
-        this.scenes = {
-            1: document.getElementById('scene-gradient'),
-            2: document.getElementById('scene-blobs'),
-            3: document.getElementById('scene-galaxy')
-        };
+        // Galaxy video background
         this.galaxyContainer = document.getElementById('bg-galaxy');
-        this.sceneIndicator = document.querySelector('.scene-indicator .scene-number');
         
         // Fullscreen elements
         this.fullscreenToggle = document.getElementById('fullscreen-toggle');
@@ -73,8 +64,6 @@ class VibeProjector {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'f' || e.key === 'F') {
                 this.toggleFullscreen();
-            } else if (e.key >= '1' && e.key <= '4') {
-                this.switchScene(parseInt(e.key));
             }
         });
         
@@ -114,98 +103,7 @@ class VibeProjector {
         // Video automatically handles resize, no special handling needed
     }
     
-    loadScenePreference() {
-        // Load saved scene preference from localStorage
-        const savedScene = localStorage.getItem('vibe-projector-scene');
-        if (savedScene && (this.scenes[savedScene] || savedScene === '4')) {
-            this.switchScene(parseInt(savedScene), false);
-        }
-    }
-    
-    switchScene(sceneNumber, savePreference = true) {
-        console.log('Switching to scene:', sceneNumber, 'from scene:', this.currentScene);
-        if (sceneNumber === this.currentScene) {
-            return;
-        }
-        
-        // Stop current scene
-        if (this.currentScene === 4) {
-            this.stopGalaxyScene();
-        }
-        
-        // Remove active class from current scene
-        if (this.currentScene <= 3 && this.scenes[this.currentScene]) {
-            this.scenes[this.currentScene].classList.remove('active');
-        }
-        if (this.currentScene === 4) {
-            this.galaxyContainer.classList.remove('active');
-        }
-        
-        // Add active class to new scene
-        if (sceneNumber <= 3 && this.scenes[sceneNumber]) {
-            this.scenes[sceneNumber].classList.add('active');
-        } else if (sceneNumber === 4) {
-            this.startGalaxyScene();
-            // Ensure the video container is visible immediately
-            this.galaxyContainer.classList.add('active');
-        }
-        
-        // Update scene indicator
-        this.sceneIndicator.textContent = sceneNumber;
-        
-        // Update current scene
-        this.currentScene = sceneNumber;
-        
-        // Add transition effect
-        this.projector.classList.add('scene-transition');
-        setTimeout(() => {
-            this.projector.classList.remove('scene-transition');
-        }, 500);
-        
-        // Save preference to localStorage
-        if (savePreference) {
-            localStorage.setItem('vibe-projector-scene', sceneNumber.toString());
-        }
-        
-        // Update fullscreen icon based on scene
-        this.updateFullscreenIcon();
-    }
-    
-    startGalaxyScene() {
-        try {
-            console.log('Starting galaxy video scene...');
-            const video = document.getElementById('galaxy-video');
-            if (video) {
-                // Ensure video is ready and visible
-                video.style.display = 'block';
-                console.log('Video element found, attempting to play...');
-                video.play().then(() => {
-                    console.log('Video started playing successfully');
-                }).catch(e => {
-                    console.warn('Video autoplay failed:', e);
-                });
-            } else {
-                console.warn('Galaxy video not found, falling back to scene 1');
-                this.switchScene(1, false);
-            }
-        } catch (error) {
-            console.error('Error starting galaxy video scene:', error);
-            this.switchScene(1, false);
-        }
-    }
-    
-    stopGalaxyScene() {
-        try {
-            const video = document.getElementById('galaxy-video');
-            if (video) {
-                video.pause();
-                video.currentTime = 0; // Reset to beginning
-            }
-            this.galaxyContainer.classList.remove('active');
-        } catch (error) {
-            console.error('Error stopping galaxy video scene:', error);
-        }
-    }
+    // Galaxy video background is always active - no scene switching needed
     
     updateFullscreenIcon() {
         if (document.fullscreenElement) {
@@ -555,13 +453,7 @@ class VibeProjector {
     
     // Cleanup method for page unload
     cleanup() {
-        if (this.currentScene === 4) {
-            const video = document.getElementById('galaxy-video');
-            if (video) {
-                video.pause();
-                video.currentTime = 0;
-            }
-        }
+        // Video cleanup not needed - it's always active
     }
 }
 

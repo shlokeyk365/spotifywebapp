@@ -8,38 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/scenes.css') }}">
 </head>
 <body>
-    <!-- Galaxy background container (Video) -->
-    <div id="bg-galaxy" class="bg-galaxy">
+    <!-- Galaxy video background -->
+    <div id="bg-galaxy" class="bg-galaxy active">
         <video id="galaxy-video" autoplay muted loop playsinline>
             <source src="/static/videos/galaxyvid.mp4" type="video/mp4">
-            <!-- Fallback to CSS scene if video fails -->
         </video>
-    </div>
-    
-    <!-- Animated background scenes -->
-    <div class="scene-container">
-        <!-- Scene 1: Animated Gradient -->
-        <div id="scene-gradient" class="scene scene-gradient active"></div>
-        
-        <!-- Scene 2: Drifting Blobs -->
-        <div id="scene-blobs" class="scene scene-blobs">
-            <div class="blob"></div>
-            <div class="blob"></div>
-            <div class="blob"></div>
-            <div class="blob"></div>
-        </div>
-        
-        <!-- Scene 3: Galaxy Stripes -->
-        <div id="scene-galaxy" class="scene scene-galaxy">
-            <div class="galaxy-stripe"></div>
-            <div class="galaxy-stripe"></div>
-            <div class="galaxy-stripe"></div>
-            <div class="galaxy-stripe"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
     </div>
 
     <!-- Toast notification area -->
@@ -47,9 +20,9 @@
 
     <!-- Main projector interface -->
     <div id="projector" class="projector">
-        <!-- Scene indicator -->
+        <!-- Galaxy Video Background -->
         <div class="scene-indicator">
-            Scene <span class="scene-number">1</span>
+            Galaxy Background
         </div>
         
         <!-- Fullscreen toggle button -->
@@ -106,9 +79,9 @@
             </button>
         </div>
         
-        <!-- Enhanced scene switching hints -->
+        <!-- Fullscreen hint -->
         <div class="scene-hint">
-            Press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> to switch scenes • <kbd>F</kbd> for fullscreen
+            Press <kbd>F</kbd> for fullscreen
         </div>
     </div>
     

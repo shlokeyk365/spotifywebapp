@@ -3,7 +3,7 @@
  * Handles real-time updates from Spotify, UI interactions, scene management, and error handling
  */
 
-import { initGalaxy, startGalaxy, stopGalaxy, resizeGalaxy, disposeGalaxy } from './galaxy.js';
+// Video-based galaxy scene - no Three.js imports needed
 
 class VibeProjector {
     constructor() {
@@ -111,12 +111,7 @@ class VibeProjector {
             this.handleNetworkOffline();
         });
         
-        // Window resize for galaxy scene
-        window.addEventListener('resize', () => {
-            if (this.currentScene === 4) {
-                resizeGalaxy();
-            }
-        });
+        // Video automatically handles resize, no special handling needed
     }
     
     loadScenePreference() {
@@ -128,8 +123,6 @@ class VibeProjector {
     }
     
     switchScene(sceneNumber, savePreference = true) {
-        console.log('Switching to scene:', sceneNumber, 'from scene:', this.currentScene);
-        
         if (sceneNumber === this.currentScene) {
             return;
         }
@@ -177,34 +170,30 @@ class VibeProjector {
     
     startGalaxyScene() {
         try {
-            console.log('Starting galaxy scene...');
-            // Initialize galaxy scene
-            const success = initGalaxy(this.galaxyContainer);
-            console.log('Galaxy initialization result:', success);
-            if (success) {
+            const video = document.getElementById('galaxy-video');
+            if (video) {
                 this.galaxyContainer.classList.add('active');
-                startGalaxy();
-                console.log('Galaxy scene started successfully');
+                video.play().catch(e => console.warn('Video autoplay failed:', e));
             } else {
-                console.warn('Failed to initialize galaxy scene, falling back to scene 1');
+                console.warn('Galaxy video not found, falling back to scene 1');
                 this.switchScene(1, false);
-                return;
             }
         } catch (error) {
-            console.error('Error starting galaxy scene:', error);
-            // Fallback to scene 1
+            console.error('Error starting galaxy video scene:', error);
             this.switchScene(1, false);
         }
     }
     
     stopGalaxyScene() {
         try {
-            if (this.currentScene === 4) {
-                stopGalaxy();
-                this.galaxyContainer.classList.remove('active');
+            const video = document.getElementById('galaxy-video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0; // Reset to beginning
             }
+            this.galaxyContainer.classList.remove('active');
         } catch (error) {
-            console.error('Error stopping galaxy scene:', error);
+            console.error('Error stopping galaxy video scene:', error);
         }
     }
     
@@ -557,7 +546,11 @@ class VibeProjector {
     // Cleanup method for page unload
     cleanup() {
         if (this.currentScene === 4) {
-            disposeGalaxy();
+            const video = document.getElementById('galaxy-video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
         }
     }
 }

@@ -8,8 +8,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/scenes.css') }}">
 </head>
 <body>
-    <!-- Galaxy background container (Three.js) -->
-    <div id="bg-galaxy" class="bg-galaxy"></div>
+    <!-- Galaxy background container (Video) -->
+    <div id="bg-galaxy" class="bg-galaxy">
+        <video id="galaxy-video" autoplay muted loop playsinline>
+            <source src="/static/videos/galaxyvid.mp4" type="video/mp4">
+            <!-- Fallback to CSS scene if video fails -->
+        </video>
+    </div>
     
     <!-- Animated background scenes -->
     <div class="scene-container">

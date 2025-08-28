@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/scenes.css') }}">
 </head>
 <body>
+    <!-- Galaxy background container (Three.js) -->
+    <div id="bg-galaxy" class="bg-galaxy"></div>
+    
     <!-- Animated background scenes -->
     <div class="scene-container">
         <!-- Scene 1: Animated Gradient -->
@@ -100,7 +103,7 @@
         
         <!-- Enhanced scene switching hints -->
         <div class="scene-hint">
-            Press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> to switch scenes • <kbd>F</kbd> for fullscreen
+            Press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> to switch scenes • <kbd>F</kbd> for fullscreen
         </div>
     </div>
     
@@ -119,6 +122,6 @@
         </div>
     </div>
     
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html> 

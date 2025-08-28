@@ -3,6 +3,8 @@
  * Handles real-time updates from Spotify, UI interactions, scene management, and error handling
  */
 
+import { initGalaxy, startGalaxy, stopGalaxy, resizeGalaxy, disposeGalaxy } from './galaxy.js';
+
 class VibeProjector {
     constructor() {
         this.pollInterval = 3000; // 3 seconds
@@ -33,6 +35,7 @@ class VibeProjector {
             2: document.getElementById('scene-blobs'),
             3: document.getElementById('scene-galaxy')
         };
+        this.galaxyContainer = document.getElementById('bg-galaxy');
         this.sceneIndicator = document.querySelector('.scene-indicator .scene-number');
         
         // Fullscreen elements
@@ -70,7 +73,7 @@ class VibeProjector {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'f' || e.key === 'F') {
                 this.toggleFullscreen();
-            } else if (e.key >= '1' && e.key <= '3') {
+            } else if (e.key >= '1' && e.key <= '4') {
                 this.switchScene(parseInt(e.key));
             }
         });
@@ -107,26 +110,47 @@ class VibeProjector {
         window.addEventListener('offline', () => {
             this.handleNetworkOffline();
         });
+        
+        // Window resize for galaxy scene
+        window.addEventListener('resize', () => {
+            if (this.currentScene === 4) {
+                resizeGalaxy();
+            }
+        });
     }
     
     loadScenePreference() {
         // Load saved scene preference from localStorage
         const savedScene = localStorage.getItem('vibe-projector-scene');
-        if (savedScene && this.scenes[savedScene]) {
-            this.switchScene(parseInt(savedScene), false); // false = don't save again
+        if (savedScene && (this.scenes[savedScene] || savedScene === '4')) {
+            this.switchScene(parseInt(savedScene), false);
         }
     }
     
     switchScene(sceneNumber, savePreference = true) {
-        if (!this.scenes[sceneNumber] || sceneNumber === this.currentScene) {
+        if (sceneNumber === this.currentScene) {
             return;
         }
         
+        // Stop current scene
+        if (this.currentScene === 4) {
+            this.stopGalaxyScene();
+        }
+        
         // Remove active class from current scene
-        this.scenes[this.currentScene].classList.remove('active');
+        if (this.currentScene <= 3 && this.scenes[this.currentScene]) {
+            this.scenes[this.currentScene].classList.remove('active');
+        }
+        if (this.currentScene === 4) {
+            this.galaxyContainer.classList.remove('active');
+        }
         
         // Add active class to new scene
-        this.scenes[sceneNumber].classList.add('active');
+        if (sceneNumber <= 3 && this.scenes[sceneNumber]) {
+            this.scenes[sceneNumber].classList.add('active');
+        } else if (sceneNumber === 4) {
+            this.startGalaxyScene();
+        }
         
         // Update scene indicator
         this.sceneIndicator.textContent = sceneNumber;
@@ -147,6 +171,38 @@ class VibeProjector {
         
         // Update fullscreen icon based on scene
         this.updateFullscreenIcon();
+    }
+    
+    startGalaxyScene() {
+        try {
+            // Initialize galaxy scene if not already done
+            if (!this.galaxyContainer.classList.contains('active')) {
+                const success = initGalaxy(this.galaxyContainer);
+                if (success) {
+                    this.galaxyContainer.classList.add('active');
+                    startGalaxy();
+                } else {
+                    console.warn('Failed to initialize galaxy scene, falling back to scene 1');
+                    this.switchScene(1, false);
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('Error starting galaxy scene:', error);
+            // Fallback to scene 1
+            this.switchScene(1, false);
+        }
+    }
+    
+    stopGalaxyScene() {
+        try {
+            if (this.currentScene === 4) {
+                stopGalaxy();
+                this.galaxyContainer.classList.remove('active');
+            }
+        } catch (error) {
+            console.error('Error stopping galaxy scene:', error);
+        }
     }
     
     updateFullscreenIcon() {
@@ -494,9 +550,21 @@ class VibeProjector {
             }
         });
     }
+    
+    // Cleanup method for page unload
+    cleanup() {
+        if (this.currentScene === 4) {
+            disposeGalaxy();
+        }
+    }
 }
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new VibeProjector();
+    const projector = new VibeProjector();
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        projector.cleanup();
+    });
 }); 

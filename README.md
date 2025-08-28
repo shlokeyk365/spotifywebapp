@@ -30,7 +30,7 @@ A fullscreen projector web app that displays current Spotify track information w
    - Fill in app details:
      - App name: `Vibe Projector` (or your preferred name)
      - App description: `Fullscreen projector for Spotify tracks`
-     - Redirect URI: `http://localhost:5000/callback`
+     - Redirect URI: `http://127.0.0.1:5000/callback`
      - Website: `http://localhost:5000`
    - Accept terms and create app
 
@@ -39,8 +39,8 @@ A fullscreen projector web app that displays current Spotify track information w
    - These will be used in your `.env` file
 
 3. **Configure Redirect URI**:
-   - In your app settings, ensure the redirect URI is exactly: `http://localhost:5000/callback`
-   - This must match the `SPOTIFY_REDIRECT_URI` in your `.env` file
+   - In your app settings, ensure the redirect URI is exactly: `http://127.0.0.1:5000/callback`
+   - This must match the `SPOTIFY_REDIRECT_URI` in your `.env` file (use `127.0.0.1` not `localhost`)
 
 ### Installation
 
@@ -81,7 +81,7 @@ Copy `.env.example` to `.env` and fill in:
 - `FLASK_SECRET_KEY`: Secret key for Flask sessions
 - `SPOTIFY_CLIENT_ID`: Your Spotify app client ID
 - `SPOTIFY_CLIENT_SECRET`: Your Spotify app client secret
-- `SPOTIFY_REDIRECT_URI`: OAuth redirect URI (default: http://localhost:5000/callback)
+   - `SPOTIFY_REDIRECT_URI`: OAuth redirect URI (default: http://127.0.0.1:5000/callback)
 
 ## OAuth Flow
 

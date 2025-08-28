@@ -233,7 +233,7 @@ class VibeProjector {
                 left: 0 !important;
                 width: 100% !important;
                 height: 100% !important;
-                z-index: 0 !important;
+                z-index: -1 !important; /* Below all UI elements */
                 opacity: 1 !important;
                 visibility: visible !important;
             `;
@@ -251,7 +251,7 @@ class VibeProjector {
                 display: block !important;
                 opacity: 1 !important;
                 visibility: visible !important;
-                z-index: 1 !important;
+                z-index: 0 !important; /* Below UI elements but above container */
             `;
             
             console.log('Moved video into fullscreen container');

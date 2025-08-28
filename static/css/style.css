@@ -43,6 +43,7 @@ body {
     justify-content: center;
     padding: 2rem;
     position: relative;
+    z-index: 1; /* Ensure container is above video */
     /* Removed background gradient - video will show through */
 }
 
@@ -89,6 +90,8 @@ body {
     transition: var(--transition);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 10; /* Ensure it's above the video background */
 }
 
 /* Cover image container */
@@ -185,6 +188,8 @@ body {
 .connect-section {
     text-align: center;
     margin-top: 2rem;
+    position: relative;
+    z-index: 10; /* Ensure it's above the video background */
 }
 
 .connect-btn {
@@ -226,6 +231,7 @@ body {
     font-size: 0.875rem;
     backdrop-filter: blur(10px);
     transition: var(--transition);
+    z-index: 10; /* Ensure it's above the video background */
 }
 
 .fullscreen-hint kbd {

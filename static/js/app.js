@@ -175,17 +175,15 @@ class VibeProjector {
     
     startGalaxyScene() {
         try {
-            // Initialize galaxy scene if not already done
-            if (!this.galaxyContainer.classList.contains('active')) {
-                const success = initGalaxy(this.galaxyContainer);
-                if (success) {
-                    this.galaxyContainer.classList.add('active');
-                    startGalaxy();
-                } else {
-                    console.warn('Failed to initialize galaxy scene, falling back to scene 1');
-                    this.switchScene(1, false);
-                    return;
-                }
+            // Initialize galaxy scene
+            const success = initGalaxy(this.galaxyContainer);
+            if (success) {
+                this.galaxyContainer.classList.add('active');
+                startGalaxy();
+            } else {
+                console.warn('Failed to initialize galaxy scene, falling back to scene 1');
+                this.switchScene(1, false);
+                return;
             }
         } catch (error) {
             console.error('Error starting galaxy scene:', error);

@@ -544,7 +544,7 @@ body {
 /* Fullscreen optimizations */
 .projector:fullscreen {
     padding: 0;
-    background: var(--bg-primary);
+    /* Removed background override - video should show through */
 }
 
 .projector:fullscreen .main-card {

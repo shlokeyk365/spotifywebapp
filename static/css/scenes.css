@@ -12,6 +12,8 @@
     opacity: 1;
 }
 
+/* Fullscreen video positioning - handled by JavaScript */
+
 /* Galaxy video styling */
 #galaxy-video {
     position: absolute;

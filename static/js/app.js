@@ -221,6 +221,43 @@ class VibeProjector {
         }
     }
     
+    ensureFullscreenVideoVisible() {
+        if (document.fullscreenElement && this.galaxyContainer && this.galaxyVideo) {
+            // Move video into the fullscreen container
+            this.projector.appendChild(this.galaxyContainer);
+            
+            // Set proper positioning for fullscreen container
+            this.galaxyContainer.style.cssText = `
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                z-index: 0 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            `;
+            
+            this.galaxyVideo.style.cssText = `
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                min-width: 100% !important;
+                min-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                transform: translate(-50%, -50%) !important;
+                object-fit: cover !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                z-index: 1 !important;
+            `;
+            
+            console.log('Moved video into fullscreen container');
+        }
+    }
+    
     async fetchNowPlaying() {
         try {
             // Reset retry count on successful request
@@ -548,6 +585,48 @@ class VibeProjector {
                 element.style.display = 'block';
             }
         });
+        
+        // Ensure video is visible in fullscreen mode
+        if (document.fullscreenElement) {
+            this.ensureVideoVisible();
+            this.ensureFullscreenVideoVisible();
+        } else {
+            // Reset video positioning when exiting fullscreen
+            if (this.galaxyContainer) {
+                // Move video back to body
+                document.body.appendChild(this.galaxyContainer);
+                
+                // Reset to normal positioning
+                this.galaxyContainer.style.cssText = `
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    z-index: 0 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                `;
+                
+                this.galaxyVideo.style.cssText = `
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    min-width: 100% !important;
+                    min-height: 100% !important;
+                    width: auto !important;
+                    height: auto !important;
+                    transform: translate(-50%, -50%) !important;
+                    object-fit: cover !important;
+                    display: block !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    z-index: 1 !important;
+                `;
+                
+                console.log('Moved video back to body');
+            }
+        }
     }
     
     // Cleanup method for page unload

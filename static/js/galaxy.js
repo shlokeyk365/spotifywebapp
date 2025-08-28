@@ -74,8 +74,8 @@ class GalaxyScene {
         // Performance optimizations
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.maxPixelRatio));
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.renderer.setClearColor(0x000000, 0);
-        this.renderer.autoClear = false;
+        this.renderer.setClearColor(0x000000, 1); // Solid black background
+        this.renderer.autoClear = true; // Clear the canvas each frame
         
         // Attach to container
         this.container.appendChild(this.renderer.domElement);
@@ -91,7 +91,7 @@ class GalaxyScene {
     setupCamera() {
         const aspect = this.container.clientWidth / this.container.clientHeight;
         this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        this.camera.position.z = 5;
+        this.camera.position.z = 15; // Move camera closer to see stars better
     }
     
     setupScene() {
@@ -102,13 +102,13 @@ class GalaxyScene {
     createStarLayers() {
         // Layer 1: Distant stars (small, slow movement)
         const distantStars = this.createStarField(1000, 0.5, 0.8, 0xffffff);
-        distantStars.position.z = -50;
+        distantStars.position.z = -25; // Closer to camera
         this.scene.add(distantStars);
         this.starLayers.push(distantStars);
         
         // Layer 2: Near stars (larger, faster movement)
         const nearStars = this.createStarField(500, 1.2, 1.5, 0x88ccff);
-        nearStars.position.z = -30;
+        nearStars.position.z = -15; // Closer to camera
         this.scene.add(nearStars);
         this.starLayers.push(nearStars);
     }
@@ -122,8 +122,8 @@ class GalaxyScene {
         for (let i = 0; i < count; i++) {
             const i3 = i * 3;
             
-            // Random positions in a sphere
-            const radius = 20 + Math.random() * 30;
+            // Random positions in a sphere - closer to camera
+            const radius = 10 + Math.random() * 20; // Smaller radius
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(Math.random() * 2 - 1);
             

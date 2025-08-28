@@ -67,7 +67,7 @@
     border-radius: 25px;
     cursor: pointer;
     font-size: 1.1rem;
-    backdrop-filter: blur(10px);
+    /* No blur - galaxy background stays completely sharp */
     transition: all 0.3s ease;
 }
 
@@ -78,7 +78,7 @@
 
 /* Enhanced glassy card styling */
 .main-card {
-    backdrop-filter: blur(5px) saturate(180%); /* Reduced blur for sharp background */
+    /* No blur - galaxy background stays completely sharp */
     background: rgba(42, 42, 42, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -94,7 +94,7 @@
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.875rem;
-    backdrop-filter: blur(3px); /* Reduced blur for sharp background */
+    /* No blur - galaxy background stays completely sharp */
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
 }
@@ -110,7 +110,7 @@
     padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
-    backdrop-filter: blur(3px); /* Reduced blur for sharp background */
+    /* No blur - galaxy background stays completely sharp */
     transition: all 0.3s ease;
     z-index: 10;
 }
@@ -137,7 +137,7 @@
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
     font-size: 0.875rem;
-    backdrop-filter: blur(3px); /* Reduced blur for sharp background */
+    /* No blur - galaxy background stays completely sharp */
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
 }

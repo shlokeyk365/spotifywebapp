@@ -88,8 +88,7 @@ body {
     max-width: 600px;
     width: 100%;
     transition: var(--transition);
-    /* Reduced blur to keep galaxy background sharp */
-    backdrop-filter: blur(5px);
+    /* No blur - galaxy background stays completely sharp */
     border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     z-index: 10; /* Ensure it's above the video background */
@@ -230,7 +229,7 @@ body {
     padding: 0.75rem 1.5rem;
     border-radius: 20px;
     font-size: 0.875rem;
-    backdrop-filter: blur(3px); /* Reduced blur for sharp background */
+    /* No blur - galaxy background stays completely sharp */
     transition: var(--transition);
     z-index: 10; /* Ensure it's above the video background */
 }
@@ -352,7 +351,7 @@ body {
     border-radius: 12px;
     font-size: 0.875rem;
     font-weight: 500;
-    backdrop-filter: blur(20px);
+    /* No blur - galaxy background stays completely sharp */
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: var(--shadow);
     transform: translateY(-20px);
@@ -474,7 +473,7 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.75rem;
-    backdrop-filter: blur(10px);
+    /* No blur - galaxy background stays completely sharp */
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
     display: none;

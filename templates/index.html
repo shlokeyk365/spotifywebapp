@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Projector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/scenes.css') }}">
+</head>
+<body>
+    <!-- Animated background scenes -->
+    <div class="scene-container">
+        <!-- Scene 1: Animated Gradient -->
+        <div id="scene-gradient" class="scene scene-gradient active"></div>
+        
+        <!-- Scene 2: Drifting Blobs -->
+        <div id="scene-blobs" class="scene scene-blobs">
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+            <div class="blob"></div>
+        </div>
+        
+        <!-- Scene 3: Galaxy Stripes -->
+        <div id="scene-galaxy" class="scene scene-galaxy">
+            <div class="galaxy-stripe"></div>
+            <div class="galaxy-stripe"></div>
+            <div class="galaxy-stripe"></div>
+            <div class="galaxy-stripe"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Toast notification area -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Main projector interface -->
+    <div id="projector" class="projector">
+        <!-- Scene indicator -->
+        <div class="scene-indicator">
+            Scene <span class="scene-number">1</span>
+        </div>
+        
+        <!-- Fullscreen toggle button -->
+        <button id="fullscreen-toggle" class="fullscreen-toggle" title="Toggle Fullscreen">
+            <svg id="fullscreen-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+            </svg>
+        </button>
+        
+        <!-- Status badge -->
+        <div id="status-badge" class="status-badge">
+            <span id="status-text">Connecting...</span>
+        </div>
+        
+        <!-- Main content card -->
+        <div id="main-card" class="main-card">
+            <!-- Cover image container -->
+            <div class="cover-container">
+                <img id="cover-image" src="{{ url_for('static', filename='images/placeholder-cover.jpg') }}" 
+                     alt="Album Cover" class="cover-image">
+                <div id="cover-placeholder" class="cover-placeholder">
+                    <svg class="music-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Track information -->
+            <div class="track-info">
+                <h1 id="track-title" class="track-title">No Track Playing</h1>
+                <h2 id="track-artist" class="track-artist">Connect to Spotify</h2>
+                <div id="device-info" class="device-info">No device connected</div>
+            </div>
+            
+            <!-- Playback progress -->
+            <div id="progress-container" class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div class="time-info">
+                    <span id="current-time" class="current-time">0:00</span>
+                    <span id="total-time" class="total-time">0:00</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Connect button (shown when unauthorized) -->
+        <div id="connect-section" class="connect-section" style="display: none;">
+            <button id="connect-btn" class="connect-btn" onclick="window.location.href='/login'">
+                <svg class="spotify-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+                Connect Spotify
+            </button>
+        </div>
+        
+        <!-- Enhanced scene switching hints -->
+        <div class="scene-hint">
+            Press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> to switch scenes • <kbd>F</kbd> for fullscreen
+        </div>
+    </div>
+    
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Connecting to Spotify...</div>
+    </div>
+    
+    <!-- Error overlay -->
+    <div id="error-overlay" class="error-overlay" style="display: none;">
+        <div class="error-content">
+            <h2>Connection Error</h2>
+            <p id="error-message">Unable to connect to Spotify</p>
+            <button onclick="location.reload()" class="retry-btn">Retry</button>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

@@ -128,6 +128,8 @@ class VibeProjector {
     }
     
     switchScene(sceneNumber, savePreference = true) {
+        console.log('Switching to scene:', sceneNumber, 'from scene:', this.currentScene);
+        
         if (sceneNumber === this.currentScene) {
             return;
         }
@@ -175,11 +177,14 @@ class VibeProjector {
     
     startGalaxyScene() {
         try {
+            console.log('Starting galaxy scene...');
             // Initialize galaxy scene
             const success = initGalaxy(this.galaxyContainer);
+            console.log('Galaxy initialization result:', success);
             if (success) {
                 this.galaxyContainer.classList.add('active');
                 startGalaxy();
+                console.log('Galaxy scene started successfully');
             } else {
                 console.warn('Failed to initialize galaxy scene, falling back to scene 1');
                 this.switchScene(1, false);

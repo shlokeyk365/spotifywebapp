@@ -8,7 +8,12 @@ def create_app():
     # Load environment variables
     load_dotenv()
     
-    app = Flask(__name__)
+    # Get the root directory (where templates and static folders are)
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    app = Flask(__name__, 
+                template_folder=os.path.join(root_dir, 'templates'),
+                static_folder=os.path.join(root_dir, 'static'))
     
     # Basic configuration
     app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'dev-secret-key-change-in-production')

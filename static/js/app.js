@@ -15,6 +15,14 @@ class VibeProjector {
         this.maxRetries = 3;
         this.networkError = false;
         
+        // Track last notifications to prevent repetition
+        this.lastNotifications = {
+            playing: null,
+            paused: null,
+            nothing: null,
+            network: null
+        };
+        
         this.initializeElements();
         this.bindEvents();
         this.initializeVideo();
@@ -298,10 +306,14 @@ class VibeProjector {
         if (data.title && data.artist) {
             if (data.isPlaying) {
                 this.updateStatus('playing');
-                this.showToast('Now playing: ' + data.title, 'success');
+                if (this.shouldShowNotification('success', 'playing')) {
+                    this.showToast('Now playing: ' + data.title, 'success');
+                }
             } else {
                 this.updateStatus('paused');
-                this.showToast('Paused: ' + data.title, 'info');
+                if (this.shouldShowNotification('info', 'paused')) {
+                    this.showToast('Paused: ' + data.title, 'info');
+                }
             }
             
             this.updateTrackInfo(data);
@@ -309,7 +321,9 @@ class VibeProjector {
         } else {
             // Nothing playing
             this.updateStatus('nothing-playing');
-            this.showToast('Nothing currently playing', 'info');
+            if (this.shouldShowNotification('info', 'nothing')) {
+                this.showToast('Nothing currently playing', 'info');
+            }
             this.showNoTrackState();
         }
         
@@ -444,7 +458,9 @@ class VibeProjector {
         
         if (this.retryCount <= this.maxRetries) {
             this.updateStatus('network-error');
-            this.showToast(`Network error, retrying... (${this.retryCount}/${this.maxRetries})`, 'warning');
+            if (this.shouldShowNotification('warning', 'network')) {
+                this.showToast(`Network error, retrying... (${this.retryCount}/${this.maxRetries})`, 'warning');
+            }
             
             // Retry after a delay
             setTimeout(() => {
@@ -453,7 +469,9 @@ class VibeProjector {
                 }
             }, 2000 * this.retryCount); // Exponential backoff
         } else {
-            this.showToast('Network connection failed. Please check your internet connection.', 'error');
+            if (this.shouldShowNotification('error', 'network')) {
+                this.showToast('Network connection failed. Please check your internet connection.', 'error');
+            }
             this.updateStatus('network-error');
         }
     }
@@ -462,7 +480,9 @@ class VibeProjector {
         if (this.networkError) {
             this.networkError = false;
             this.retryCount = 0;
-            this.showToast('Network connection restored', 'success');
+            if (this.shouldShowNotification('success', 'network')) {
+                this.showToast('Network connection restored', 'success');
+            }
             this.updateStatus('connecting');
             this.fetchNowPlaying();
         }
@@ -470,8 +490,32 @@ class VibeProjector {
     
     handleNetworkOffline() {
         this.networkError = true;
-        this.showToast('Network connection lost', 'error');
+        if (this.shouldShowNotification('error', 'network')) {
+            this.showToast('Network connection lost', 'error');
+        }
         this.updateStatus('network-error');
+    }
+    
+    shouldShowNotification(type, key) {
+        const now = Date.now();
+        const lastShown = this.lastNotifications[key];
+        
+        // Show notification if:
+        // 1. Never shown before, or
+        // 2. Different content, or  
+        // 3. More than 10 seconds have passed
+        if (!lastShown || 
+            lastShown.content !== key || 
+            (now - lastShown.timestamp) > 10000) {
+            
+            this.lastNotifications[key] = {
+                content: key,
+                timestamp: now
+            };
+            return true;
+        }
+        
+        return false;
     }
     
     showToast(message, type = 'info', duration = 5000) {
